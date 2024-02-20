@@ -3,9 +3,83 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/styles/main.css" />
     <title>Document</title>
   </head>
   <body>
-    <p>Hello World</p>
+    <div class="container">
+      <h1>DnD Character Creator 🎲</h1>
+      <img src="/images/d20.png" alt="" class="die" style="height: 150px" />
+      <form action="/getCharacter" id="form" class="form" method="GET">
+        <label for="classes">Choose a class:</label>
+        <select name="classes" id="clasess">
+          <option value="">-</option>
+          <option value="barbarian">Barbarian</option>
+          <option value="bard">Bard</option>
+          <option value="cleric">Cleric</option>
+          <option value="druid">Druid</option>
+          <option value="fighter">Fighter</option>
+          <option value="monk">Monk</option>
+          <option value="paladin">Paladin</option>
+          <option value="ranger">Ranger</option>
+          <option value="rogue">Rogue</option>
+          <option value="sorcerer">Sorcerer</option>
+          <option value="warlock">Warlock</option>
+          <option value="wizard">Wizard</option>
+        </select>
+        <label for="races">Choose a race:</label>
+        <select name="races" id="races">
+          <option value="">-</option>
+          <option value="dragonborn">Dragonborn</option>
+          <option value="dwarf">Dwarf</option>
+          <option value="elf">Elf</option>
+          <option value="half-elf">Half-elf</option>
+          <option value="half-orc">Half-orc</option>
+          <option value="halfling">Halfling</option>
+          <option value="human">Human</option>
+          <option value="tiefling">tiefling</option>
+        </select>
+        <label for="level">Choose a level:</label>
+        <input
+          type="number"
+          id="level"
+          name="level"
+          min="1"
+          max="20"
+          value="1"
+        />
+        <br />
+        <div class="button-container">
+          <button type="submit" value="Submit" class="submit">Generate</button>
+        </div>
+      </form>
+      <% if (locals.result) { %>
+      <div class="stat-container">
+        <div class="basic-container">
+          <h2>Basic</h2>
+          <ul>
+            <li>Class: <%= result[locals.level-1].class.name %></li>
+            <li>Level: <%= locals.level %></li>
+            <li>
+              Ability Score bonus: <%=
+              result[locals.level-1].ability_score_bonuses %>
+            </li>
+            <li>Proffiency Bonus: +<%= result[locals.level-1].prof_bonus %></li>
+          </ul>
+        </div>
+        <div class="features-container">
+          <h2>Features</h2>
+          <ul>
+            <% for (let i = 0; i < locals.level; i++) { %> <%
+            result[i].features.forEach(feature => { %>
+            <li><%= feature.name %></li>
+            <% });} %>
+          </ul>
+        </div>
+      </div>
+      <% } else if (locals.error) { %>
+      <h1>Something weird happend</h1>
+      <% } %>
+    </div>
   </body>
 </html>
